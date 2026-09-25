@@ -3,116 +3,504 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Informatik – Eine kleine Einführung</title>
+  <title>Clever Investieren</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    :root {
+      --bg: #f4f6fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --accent: #059669;
+      --accent2: #2563eb;
+      --danger: #dc2626;
+      --input: #f9fafb;
     }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a;
+        --card: #1e293b;
+        --text: #e5e7eb;
+        --muted: #94a3b8;
+        --border: #334155;
+        --accent: #10b981;
+        --accent2: #60a5fa;
+        --danger: #f87171;
+        --input: #0f172a;
+      }
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      background: #f4f6fb;
-      color: #1f2937;
+      background: var(--bg);
+      color: var(--text);
       line-height: 1.6;
     }
 
     header {
-      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      background: linear-gradient(135deg, #065f46, #2563eb);
       color: #fff;
       text-align: center;
-      padding: 4rem 1rem 3rem;
+      padding: 3.5rem 1rem 4.5rem;
     }
+    header h1 { font-size: 2.4rem; margin-bottom: .75rem; }
+    header p { max-width: 640px; margin: 0 auto; opacity: .9; }
 
-    header h1 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: .5rem;
+      margin-top: 1.5rem;
     }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      background: rgba(255,255,255,.15);
+      padding: .4rem .9rem;
+      border-radius: 999px;
+      font-size: .95rem;
+    }
+    nav a:hover { background: rgba(255,255,255,.3); }
 
-    header p {
-      max-width: 600px;
-      margin: 0 auto;
-      font-size: 1.1rem;
-      opacity: 0.9;
+    .currency {
+      margin-top: 1rem;
+      font-size: .9rem;
+    }
+    .currency select {
+      width: auto;
+      margin-left: .4rem;
+      padding: .2rem .5rem;
+      border-radius: 6px;
+      border: none;
     }
 
     main {
       max-width: 1000px;
-      margin: -2rem auto 3rem;
+      margin: -2.5rem auto 3rem;
       padding: 0 1rem;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 1.5rem;
     }
 
-    section {
-      background: #fff;
-      border-radius: 12px;
+    section.card {
+      background: var(--card);
+      border-radius: 14px;
       padding: 1.75rem;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 4px 16px rgba(0,0,0,.08);
+      scroll-margin-top: 1rem;
+    }
+    section h2 { font-size: 1.4rem; margin-bottom: .25rem; }
+    .sub { color: var(--muted); margin-bottom: 1.25rem; }
+
+    .form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    label { display: block; font-size: .9rem; color: var(--muted); margin-bottom: .25rem; }
+    input, select {
+      width: 100%;
+      padding: .6rem .7rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--input);
+      color: var(--text);
+      font-size: 1rem;
+    }
+    input:focus, select:focus { outline: 2px solid var(--accent2); border-color: transparent; }
+
+    button {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: .6rem 1.1rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover { filter: brightness(1.1); }
+    button.link {
+      background: none;
+      color: var(--danger);
+      padding: .2rem .4rem;
+      font-size: .9rem;
     }
 
-    section .icon {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
+    .results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.25rem;
     }
-
-    section h2 {
-      font-size: 1.3rem;
-      margin-bottom: 0.5rem;
-      color: #2563eb;
+    .stat {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: .9rem 1rem;
     }
+    .stat span { display: block; font-size: .85rem; color: var(--muted); }
+    .stat strong { font-size: 1.35rem; }
+    .stat.big strong { color: var(--accent); }
 
-    footer {
+    .legend { display: flex; flex-wrap: wrap; gap: 1rem; font-size: .85rem; color: var(--muted); margin-top: .5rem; }
+    .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: .35rem; vertical-align: -1px; }
+
+    svg { width: 100%; height: auto; display: block; }
+    svg text { fill: var(--muted); font-size: 11px; }
+
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { text-align: left; padding: .55rem .4rem; border-bottom: 1px solid var(--border); }
+    th { font-size: .85rem; color: var(--muted); font-weight: 600; }
+    td.num, th.num { text-align: right; white-space: nowrap; }
+    .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: .4rem; }
+
+    .overview {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    .donut-wrap { position: relative; max-width: 220px; margin: 0 auto; }
+    .donut-center {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
       text-align: center;
-      padding: 1.5rem;
-      color: #6b7280;
-      font-size: 0.9rem;
+    }
+    .donut-center span { font-size: .8rem; color: var(--muted); }
+    .donut-center strong { font-size: 1.15rem; }
+    .empty { color: var(--muted); font-style: italic; }
+
+    .add-row {
+      display: grid;
+      grid-template-columns: 2fr 1.5fr 1fr auto;
+      gap: .6rem;
+      align-items: end;
+    }
+
+    .note {
+      font-size: .85rem;
+      color: var(--muted);
+      background: var(--input);
+      border-left: 3px solid var(--accent);
+      padding: .6rem .8rem;
+      border-radius: 6px;
+      margin-top: 1rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+    .info-grid div { border: 1px solid var(--border); border-radius: 10px; padding: 1rem; }
+    .info-grid h3 { font-size: 1.05rem; margin-bottom: .3rem; }
+
+    footer { text-align: center; padding: 1.5rem 1rem 2.5rem; color: var(--muted); font-size: .85rem; }
+
+    @media (max-width: 640px) {
+      header h1 { font-size: 1.9rem; }
+      .overview { grid-template-columns: 1fr; }
+      .add-row { grid-template-columns: 1fr 1fr; }
+      .add-row .full { grid-column: 1 / -1; }
+      section.card { padding: 1.25rem; }
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Informatik</h1>
-    <p>
-      Informatik ist die Wissenschaft von der Verarbeitung von Informationen
-      mit Computern. Sie steckt heute fast überall – im Smartphone, im Auto
-      und sogar in der Kaffeemaschine.
-    </p>
+    <h1>📈 Clever Investieren</h1>
+    <p>Einfache Werkzeuge rund ums Geldanlegen: Rechne aus, wie dein Vermögen wachsen kann,
+      behalte den Überblick über deine Anlagen und plane Entnahmen.</p>
+    <nav>
+      <a href="#rendite">Renditerechner</a>
+      <a href="#vermoegen">Vermögensübersicht</a>
+      <a href="#entnahme">Entnahmerechner</a>
+      <a href="#wissen">Wissen</a>
+    </nav>
+    <div class="currency">
+      Währung:
+      <select id="currency" aria-label="Währung">
+        <option value="CHF">CHF</option>
+        <option value="EUR">EUR</option>
+        <option value="USD">USD</option>
+      </select>
+    </div>
   </header>
 
   <main>
-    <section>
-      <div class="icon">🖥️</div>
-      <h2>Hardware</h2>
-      <p>
-        Hardware sind alle Teile eines Computers, die man anfassen kann:
-        Prozessor, Arbeitsspeicher, Festplatte, Bildschirm und Tastatur.
-      </p>
+    <!-- Renditerechner -->
+    <section class="card" id="rendite">
+      <h2>Renditerechner</h2>
+      <p class="sub">Wie viel wird aus deinem Geld mit Zinseszins?</p>
+      <div class="form">
+        <div><label for="r-start">Startbetrag</label><input id="r-start" type="number" min="0" step="100" value="5000"></div>
+        <div><label for="r-rate">Monatliche Sparrate</label><input id="r-rate" type="number" min="0" step="10" value="200"></div>
+        <div><label for="r-return">Rendite pro Jahr (%)</label><input id="r-return" type="number" step="0.1" value="6"></div>
+        <div><label for="r-years">Laufzeit (Jahre)</label><input id="r-years" type="number" min="1" max="60" value="20"></div>
+      </div>
+      <div class="results">
+        <div class="stat big"><span>Endvermögen</span><strong id="r-end">–</strong></div>
+        <div class="stat"><span>Eingezahlt</span><strong id="r-paid">–</strong></div>
+        <div class="stat"><span>Zinsertrag</span><strong id="r-gain">–</strong></div>
+      </div>
+      <svg id="r-chart" viewBox="0 0 800 260" role="img" aria-label="Vermögensentwicklung pro Jahr"></svg>
+      <div class="legend">
+        <span><i style="background:var(--accent2)"></i>Eingezahlt</span>
+        <span><i style="background:var(--accent)"></i>Zinsertrag</span>
+      </div>
     </section>
 
-    <section>
-      <div class="icon">💾</div>
-      <h2>Software</h2>
-      <p>
-        Software sind Programme, die dem Computer sagen, was er tun soll –
-        zum Beispiel das Betriebssystem, ein Webbrowser oder ein Spiel.
-      </p>
+    <!-- Vermögensübersicht -->
+    <section class="card" id="vermoegen">
+      <h2>Vermögensübersicht</h2>
+      <p class="sub">Trage deine Anlagen ein und sieh, wie dein Vermögen aufgeteilt ist.</p>
+      <form class="add-row" id="v-form">
+        <div class="full"><label for="v-name">Bezeichnung</label><input id="v-name" placeholder="z. B. MSCI World ETF" required></div>
+        <div><label for="v-cat">Kategorie</label>
+          <select id="v-cat"></select>
+        </div>
+        <div><label for="v-amount">Betrag</label><input id="v-amount" type="number" min="0" step="any" required></div>
+        <div><button type="submit">Hinzufügen</button></div>
+      </form>
+
+      <div class="overview" style="margin-top:1.5rem">
+        <div class="donut-wrap">
+          <svg id="v-donut" viewBox="0 0 200 200" role="img" aria-label="Aufteilung des Vermögens"></svg>
+          <div class="donut-center"><span>Gesamt</span><strong id="v-total">–</strong></div>
+        </div>
+        <div id="v-cats"></div>
+      </div>
+
+      <table>
+        <thead><tr><th>Bezeichnung</th><th>Kategorie</th><th class="num">Betrag</th><th></th></tr></thead>
+        <tbody id="v-list"></tbody>
+      </table>
+      <p class="note">🔒 Deine Einträge werden nur in deinem Browser gespeichert. Nichts wird ins Internet übertragen,
+        andere Besucher sehen deine Daten nicht.</p>
     </section>
 
-    <section>
-      <div class="icon">🌐</div>
-      <h2>Internet</h2>
-      <p>
-        Das Internet ist ein weltweites Netz aus Computern. Darüber können wir
-        Webseiten aufrufen, E-Mails schreiben und Videos anschauen.
-      </p>
+    <!-- Entnahmerechner -->
+    <section class="card" id="entnahme">
+      <h2>Entnahmerechner</h2>
+      <p class="sub">Wie lange reicht dein Vermögen, wenn du jeden Monat Geld entnimmst?</p>
+      <div class="form">
+        <div><label for="e-capital">Vermögen</label><input id="e-capital" type="number" min="0" step="1000" value="300000"></div>
+        <div><label for="e-withdraw">Monatliche Entnahme</label><input id="e-withdraw" type="number" min="0" step="50" value="1500"></div>
+        <div><label for="e-return">Rendite pro Jahr (%)</label><input id="e-return" type="number" step="0.1" value="4"></div>
+      </div>
+      <div class="results">
+        <div class="stat big"><span>Geld reicht für</span><strong id="e-duration">–</strong></div>
+        <div class="stat"><span>Summe aller Entnahmen</span><strong id="e-total">–</strong></div>
+        <div class="stat"><span>Entnahme ohne Kapitalverzehr</span><strong id="e-perpetual">–</strong></div>
+      </div>
+      <svg id="e-chart" viewBox="0 0 800 260" role="img" aria-label="Restvermögen pro Jahr"></svg>
+      <div class="legend"><span><i style="background:var(--accent2)"></i>Restvermögen am Jahresende</span></div>
+    </section>
+
+    <!-- Wissen -->
+    <section class="card" id="wissen">
+      <h2>Kleines Anlage-Wissen</h2>
+      <p class="sub">Die wichtigsten Grundbegriffe kurz erklärt.</p>
+      <div class="info-grid">
+        <div><h3>🔁 Zinseszins</h3><p>Erträge werden wieder angelegt und bringen selbst neue Erträge. Je länger die Laufzeit, desto stärker der Effekt.</p></div>
+        <div><h3>🧺 ETF</h3><p>Ein börsengehandelter Fonds, der einen Index nachbildet, z. B. den MSCI World. Günstig und breit gestreut.</p></div>
+        <div><h3>🎯 Diversifikation</h3><p>Verteile dein Geld auf viele Anlagen, Branchen und Länder. So sinkt das Risiko, dass ein einzelner Verlust stark schadet.</p></div>
+        <div><h3>⚖️ Risiko &amp; Rendite</h3><p>Höhere Renditechancen bedeuten meist auch höhere Schwankungen. Lege nur Geld an, das du länger nicht brauchst.</p></div>
+      </div>
     </section>
   </main>
 
   <footer>
-    Eine kleine Mini-Webseite zum Thema Informatik
+    Alle Berechnungen sind vereinfachte Beispiele ohne Steuern, Gebühren und Inflation.
+    Keine Anlageberatung. Vergangene Renditen sind keine Garantie für die Zukunft.
   </footer>
+
+  <script>
+    // ---------- Speicher (nur lokal im Browser) ----------
+    function load(key, fallback) {
+      try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
+      catch (e) { return fallback; }
+    }
+    function save(key, value) {
+      try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) {}
+    }
+
+    // ---------- Formatierung ----------
+    const currencySelect = document.getElementById('currency');
+    currencySelect.value = load('currency', 'CHF');
+    function money(n) {
+      return new Intl.NumberFormat('de-CH', {
+        style: 'currency', currency: currencySelect.value, maximumFractionDigits: 0
+      }).format(n);
+    }
+    function short(n) {
+      if (Math.abs(n) >= 1e6) return (n / 1e6).toFixed(1).replace('.0', '') + ' Mio.';
+      if (Math.abs(n) >= 1e3) return Math.round(n / 1e3) + 'k';
+      return Math.round(n).toString();
+    }
+    const num = id => parseFloat(document.getElementById(id).value) || 0;
+    const $ = id => document.getElementById(id);
+
+    // ---------- Balkendiagramm (SVG, gestapelt) ----------
+    function barChart(svg, labels, series) {
+      const W = 800, H = 260, L = 55, B = 25, T = 10;
+      const totals = labels.map((_, i) => series.reduce((s, x) => s + Math.max(0, x.values[i]), 0));
+      const max = Math.max(...totals, 1);
+      const bw = (W - L) / labels.length;
+      let out = '';
+      for (let g = 0; g <= 4; g++) {
+        const y = T + (H - T - B) * (1 - g / 4);
+        out += `<line x1="${L}" x2="${W}" y1="${y}" y2="${y}" stroke="currentColor" opacity=".12"/>`;
+        out += `<text x="${L - 6}" y="${y + 4}" text-anchor="end">${short(max * g / 4)}</text>`;
+      }
+      const step = Math.ceil(labels.length / 12);
+      labels.forEach((lab, i) => {
+        let y = H - B;
+        series.forEach(s => {
+          const h = Math.max(0, s.values[i]) / max * (H - T - B);
+          y -= h;
+          out += `<rect x="${L + i * bw + bw * 0.15}" y="${y}" width="${bw * 0.7}" height="${h}" rx="2" style="fill:${s.color}"/>`;
+        });
+        if (i % step === 0 || i === labels.length - 1)
+          out += `<text x="${L + i * bw + bw / 2}" y="${H - 7}" text-anchor="middle">${lab}</text>`;
+      });
+      svg.innerHTML = out;
+    }
+
+    // ---------- Renditerechner ----------
+    function calcReturn() {
+      const start = num('r-start'), rate = num('r-rate'), p = num('r-return') / 100;
+      const years = Math.min(60, Math.max(1, Math.round(num('r-years'))));
+      const rm = Math.pow(1 + p, 1 / 12) - 1;
+      let value = start, paid = start;
+      const labels = [], paidArr = [], gainArr = [];
+      for (let m = 1; m <= years * 12; m++) {
+        value = value * (1 + rm) + rate;
+        paid += rate;
+        if (m % 12 === 0) {
+          labels.push(m / 12);
+          paidArr.push(paid);
+          gainArr.push(value - paid);
+        }
+      }
+      $('r-end').textContent = money(value);
+      $('r-paid').textContent = money(paid);
+      $('r-gain').textContent = money(value - paid);
+      barChart($('r-chart'), labels, [
+        { values: paidArr, color: 'var(--accent2)' },
+        { values: gainArr, color: 'var(--accent)' }
+      ]);
+    }
+
+    // ---------- Vermögensübersicht ----------
+    const categories = {
+      'Bankkonto': '#60a5fa',
+      'ETFs / Fonds': '#10b981',
+      'Aktien': '#8b5cf6',
+      'Anleihen': '#f59e0b',
+      'Krypto': '#ec4899',
+      'Immobilien': '#14b8a6',
+      'Vorsorge': '#6366f1',
+      'Sonstiges': '#94a3b8'
+    };
+    $('v-cat').innerHTML = Object.keys(categories).map(c => `<option>${c}</option>`).join('');
+    let assets = load('assets', []);
+
+    function escapeHtml(s) {
+      return s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    function renderAssets() {
+      const total = assets.reduce((s, a) => s + a.amount, 0);
+      $('v-total').textContent = money(total);
+
+      $('v-list').innerHTML = assets.length
+        ? assets.map((a, i) => `<tr>
+            <td>${escapeHtml(a.name)}</td>
+            <td><span class="dot" style="background:${categories[a.cat] || '#94a3b8'}"></span>${escapeHtml(a.cat)}</td>
+            <td class="num">${money(a.amount)}</td>
+            <td class="num"><button class="link" data-i="${i}" aria-label="Löschen">✕</button></td>
+          </tr>`).join('')
+        : '<tr><td colspan="4" class="empty">Noch keine Einträge – füge oben deine erste Anlage hinzu.</td></tr>';
+
+      const sums = {};
+      assets.forEach(a => sums[a.cat] = (sums[a.cat] || 0) + a.amount);
+      const entries = Object.entries(sums).sort((a, b) => b[1] - a[1]);
+
+      const r = 80, C = 2 * Math.PI * r;
+      let offset = 0, donut = `<circle cx="100" cy="100" r="${r}" fill="none" stroke="currentColor" stroke-opacity=".1" stroke-width="28"/>`;
+      if (total > 0) entries.forEach(([cat, val]) => {
+        const len = val / total * C;
+        donut += `<circle cx="100" cy="100" r="${r}" fill="none" stroke="${categories[cat]}" stroke-width="28"
+          stroke-dasharray="${len} ${C - len}" stroke-dashoffset="${-offset}" transform="rotate(-90 100 100)"/>`;
+        offset += len;
+      });
+      $('v-donut').innerHTML = donut;
+
+      $('v-cats').innerHTML = entries.length
+        ? '<table><tbody>' + entries.map(([cat, val]) => `<tr>
+            <td><span class="dot" style="background:${categories[cat]}"></span>${cat}</td>
+            <td class="num">${money(val)}</td>
+            <td class="num">${(val / total * 100).toFixed(1)} %</td></tr>`).join('') + '</tbody></table>'
+        : '<p class="empty">Hier erscheint die Aufteilung nach Kategorien.</p>';
+    }
+
+    $('v-form').addEventListener('submit', e => {
+      e.preventDefault();
+      const name = $('v-name').value.trim();
+      const amount = parseFloat($('v-amount').value);
+      if (!name || !(amount >= 0)) return;
+      assets.push({ name, cat: $('v-cat').value, amount });
+      save('assets', assets);
+      $('v-name').value = '';
+      $('v-amount').value = '';
+      $('v-name').focus();
+      renderAssets();
+    });
+    $('v-list').addEventListener('click', e => {
+      const btn = e.target.closest('button[data-i]');
+      if (!btn) return;
+      assets.splice(+btn.dataset.i, 1);
+      save('assets', assets);
+      renderAssets();
+    });
+
+    // ---------- Entnahmerechner ----------
+    function calcWithdraw() {
+      const capital = num('e-capital'), w = num('e-withdraw'), p = num('e-return') / 100;
+      const rm = Math.pow(1 + p, 1 / 12) - 1;
+      const maxYears = 100;
+      let value = capital, months = 0, taken = 0;
+      const labels = [], values = [];
+      while (months < maxYears * 12 && value > 0) {
+        value = value * (1 + rm);
+        const take = Math.min(w, value);
+        value -= take;
+        taken += take;
+        months++;
+        if (months % 12 === 0) { labels.push(months / 12); values.push(value); }
+        if (w <= 0) break;
+      }
+      if (value > 0 && months % 12 !== 0 && w > 0) { labels.push(Math.ceil(months / 12)); values.push(value); }
+
+      const y = Math.floor(months / 12), m = months % 12;
+      $('e-duration').textContent = (value > 0 || w <= 0)
+        ? (w <= 0 ? 'unbegrenzt' : `über ${maxYears} Jahre`)
+        : `${y} J. ${m} Mt.`;
+      $('e-total').textContent = money(taken);
+      $('e-perpetual').textContent = money(capital * rm) + ' / Mt.';
+      barChart($('e-chart'), labels.length ? labels : [0], [{ values: values.length ? values : [capital], color: 'var(--accent2)' }]);
+    }
+
+    // ---------- Start ----------
+    function renderAll() { calcReturn(); renderAssets(); calcWithdraw(); }
+    document.querySelectorAll('#rendite input').forEach(el => el.addEventListener('input', calcReturn));
+    document.querySelectorAll('#entnahme input').forEach(el => el.addEventListener('input', calcWithdraw));
+    currencySelect.addEventListener('change', () => { save('currency', currencySelect.value); renderAll(); });
+    renderAll();
+  </script>
 </body>
 </html>
