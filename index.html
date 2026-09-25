@@ -4,318 +4,422 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Clever Investieren</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #f4f6fb;
-      --card: #ffffff;
-      --text: #1f2937;
-      --muted: #6b7280;
-      --border: #e5e7eb;
-      --accent: #059669;
-      --accent2: #2563eb;
-      --danger: #dc2626;
-      --input: #f9fafb;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #0f172a;
-        --card: #1e293b;
-        --text: #e5e7eb;
-        --muted: #94a3b8;
-        --border: #334155;
-        --accent: #10b981;
-        --accent2: #60a5fa;
-        --danger: #f87171;
-        --input: #0f172a;
-      }
+      --navy: #0a2463;
+      --blue: #1d4ed8;
+      --blue-light: #93b4ec;
+      --blue-pale: #eef3fb;
+      --text: #0a2463;
+      --muted: #5b6b8c;
+      --border: #dde4f0;
+      --bg-alt: #f6f8fc;
+      --white: #ffffff;
+      --danger: #b42318;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
+    html { scroll-behavior: smooth; }
+
     body {
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      background: var(--bg);
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: var(--white);
       color: var(--text);
       line-height: 1.6;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
     }
 
-    header {
-      background: linear-gradient(135deg, #065f46, #2563eb);
-      color: #fff;
-      text-align: center;
-      padding: 3.5rem 1rem 4.5rem;
-    }
-    header h1 { font-size: 2.4rem; margin-bottom: .75rem; }
-    header p { max-width: 640px; margin: 0 auto; opacity: .9; }
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
 
-    nav {
+    /* ---------- Kopfzeile ---------- */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+    }
+    .topbar .container {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: .5rem;
-      margin-top: 1.5rem;
+      align-items: center;
+      gap: 32px;
+      height: 68px;
     }
-    nav a {
-      color: #fff;
+    .logo {
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: -.01em;
+      color: var(--navy);
       text-decoration: none;
-      background: rgba(255,255,255,.15);
-      padding: .4rem .9rem;
-      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .logo span { color: var(--blue); }
+    .topbar nav {
+      display: flex;
+      gap: 28px;
+      flex: 1;
+      overflow-x: auto;
+    }
+    .topbar nav a {
+      color: var(--muted);
+      text-decoration: none;
       font-size: .95rem;
+      font-weight: 500;
+      white-space: nowrap;
     }
-    nav a:hover { background: rgba(255,255,255,.3); }
-
-    .currency {
-      margin-top: 1rem;
-      font-size: .9rem;
-    }
+    .topbar nav a:hover { color: var(--navy); }
+    .currency { display: flex; align-items: center; gap: 8px; font-size: .85rem; color: var(--muted); }
     .currency select {
       width: auto;
-      margin-left: .4rem;
-      padding: .2rem .5rem;
-      border-radius: 6px;
-      border: none;
-    }
-
-    main {
-      max-width: 1000px;
-      margin: -2.5rem auto 3rem;
-      padding: 0 1rem;
-      display: grid;
-      gap: 1.5rem;
-    }
-
-    section.card {
-      background: var(--card);
-      border-radius: 14px;
-      padding: 1.75rem;
-      box-shadow: 0 4px 16px rgba(0,0,0,.08);
-      scroll-margin-top: 1rem;
-    }
-    section h2 { font-size: 1.4rem; margin-bottom: .25rem; }
-    .sub { color: var(--muted); margin-bottom: 1.25rem; }
-
-    .form {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1rem;
-      margin-bottom: 1.25rem;
-    }
-    label { display: block; font-size: .9rem; color: var(--muted); margin-bottom: .25rem; }
-    input, select {
-      width: 100%;
-      padding: .6rem .7rem;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: var(--input);
-      color: var(--text);
-      font-size: 1rem;
-    }
-    input:focus, select:focus { outline: 2px solid var(--accent2); border-color: transparent; }
-
-    button {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: .6rem 1.1rem;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-    button:hover { filter: brightness(1.1); }
-    button.link {
-      background: none;
-      color: var(--danger);
-      padding: .2rem .4rem;
+      padding: 6px 10px;
       font-size: .9rem;
     }
 
-    .results {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 1rem;
-      margin-bottom: 1.25rem;
+    /* ---------- Einstieg ---------- */
+    .hero { padding: 88px 0 72px; border-bottom: 1px solid var(--border); }
+    .eyebrow {
+      font-size: .8rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 14px;
     }
-    .stat {
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: .9rem 1rem;
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      line-height: 1.12;
+      letter-spacing: -.02em;
+      font-weight: 700;
+      max-width: 720px;
     }
-    .stat span { display: block; font-size: .85rem; color: var(--muted); }
-    .stat strong { font-size: 1.35rem; }
-    .stat.big strong { color: var(--accent); }
+    .hero .intro {
+      margin-top: 20px;
+      max-width: 580px;
+      font-size: 1.1rem;
+      color: var(--muted);
+    }
+    .hero .actions { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
 
-    .legend { display: flex; flex-wrap: wrap; gap: 1rem; font-size: .85rem; color: var(--muted); margin-top: .5rem; }
-    .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: .35rem; vertical-align: -1px; }
+    .btn {
+      display: inline-block;
+      background: var(--navy);
+      color: var(--white);
+      border: 1px solid var(--navy);
+      border-radius: 4px;
+      padding: 12px 22px;
+      font: inherit;
+      font-weight: 600;
+      font-size: .95rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .btn:hover { background: var(--blue); border-color: var(--blue); }
+    .btn.outline { background: transparent; color: var(--navy); }
+    .btn.outline:hover { background: var(--blue-pale); }
+
+    /* ---------- Abschnitte ---------- */
+    section.block { padding: 80px 0; scroll-margin-top: 68px; }
+    section.block.alt { background: var(--bg-alt); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    section h2 { font-size: 2rem; letter-spacing: -.02em; line-height: 1.2; }
+    .lead { color: var(--muted); margin-top: 10px; max-width: 620px; }
+
+    .panel {
+      margin-top: 40px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+    .panel-inputs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 20px;
+      padding: 28px;
+      border-bottom: 1px solid var(--border);
+    }
+    .panel-body { padding: 28px; }
+
+    label { display: block; font-size: .8rem; font-weight: 600; color: var(--muted); margin-bottom: 6px; letter-spacing: .01em; }
+    input, select {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: var(--white);
+      color: var(--navy);
+      font: inherit;
+      font-size: 1rem;
+      font-variant-numeric: tabular-nums;
+    }
+    input:focus, select:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(29, 78, 216, .12); }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-bottom: 1px solid var(--border);
+    }
+    .stat { padding: 24px 28px; }
+    .stat + .stat { border-left: 1px solid var(--border); }
+    .stat span { display: block; font-size: .8rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+    .stat strong { display: block; margin-top: 6px; font-size: 1.6rem; font-weight: 600; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+    .stat.main strong { color: var(--blue); }
+
+    .legend { display: flex; flex-wrap: wrap; gap: 20px; font-size: .85rem; color: var(--muted); margin-top: 14px; }
+    .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 8px; }
 
     svg { width: 100%; height: auto; display: block; }
-    svg text { fill: var(--muted); font-size: 11px; }
+    svg text { fill: var(--muted); font-size: 11px; font-family: inherit; }
 
-    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-    th, td { text-align: left; padding: .55rem .4rem; border-bottom: 1px solid var(--border); }
-    th { font-size: .85rem; color: var(--muted); font-weight: 600; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: 12px 8px; border-bottom: 1px solid var(--border); font-variant-numeric: tabular-nums; }
+    th { font-size: .75rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+    tr:last-child td { border-bottom: none; }
     td.num, th.num { text-align: right; white-space: nowrap; }
-    .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: .4rem; }
-
-    .overview {
-      display: grid;
-      grid-template-columns: 220px 1fr;
-      gap: 1.5rem;
-      align-items: center;
-    }
-    .donut-wrap { position: relative; max-width: 220px; margin: 0 auto; }
-    .donut-center {
-      position: absolute; inset: 0;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      text-align: center;
-    }
-    .donut-center span { font-size: .8rem; color: var(--muted); }
-    .donut-center strong { font-size: 1.15rem; }
-    .empty { color: var(--muted); font-style: italic; }
+    .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 10px; vertical-align: 1px; }
 
     .add-row {
       display: grid;
       grid-template-columns: 2fr 1.5fr 1fr auto;
-      gap: .6rem;
+      gap: 16px;
       align-items: end;
+      padding: 28px;
+      border-bottom: 1px solid var(--border);
     }
+
+    .overview {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 40px;
+      align-items: center;
+      padding: 28px;
+      border-bottom: 1px solid var(--border);
+    }
+    .donut-wrap { position: relative; max-width: 240px; margin: 0 auto; width: 100%; }
+    .donut-center {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .donut-center span { font-size: .75rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; font-weight: 600; }
+    .donut-center strong { font-size: 1.3rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+    .empty { color: var(--muted); }
+
+    .remove {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font: inherit;
+      font-size: .85rem;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .remove:hover { color: var(--danger); }
 
     .note {
       font-size: .85rem;
       color: var(--muted);
-      background: var(--input);
-      border-left: 3px solid var(--accent);
-      padding: .6rem .8rem;
-      border-radius: 6px;
-      margin-top: 1rem;
+      padding: 16px 28px;
+      background: var(--blue-pale);
+      border-top: 1px solid var(--border);
+      border-radius: 0 0 6px 6px;
     }
 
+    /* ---------- Wissen ---------- */
     .info-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+      margin-top: 40px;
     }
-    .info-grid div { border: 1px solid var(--border); border-radius: 10px; padding: 1rem; }
-    .info-grid h3 { font-size: 1.05rem; margin-bottom: .3rem; }
+    .info-grid .num-label { font-size: .85rem; font-weight: 600; color: var(--blue); }
+    .info-grid h3 {
+      font-size: 1.1rem;
+      margin: 10px 0 8px;
+      padding-top: 14px;
+      border-top: 2px solid var(--navy);
+    }
+    .info-grid p { color: var(--muted); font-size: .95rem; }
 
-    footer { text-align: center; padding: 1.5rem 1rem 2.5rem; color: var(--muted); font-size: .85rem; }
+    /* ---------- Fusszeile ---------- */
+    footer { background: var(--navy); color: #c5d3ee; padding: 48px 0; font-size: .85rem; }
+    footer .logo { color: var(--white); display: inline-block; margin-bottom: 12px; }
+    footer .logo span { color: var(--blue-light); }
+    footer p { max-width: 640px; }
 
-    @media (max-width: 640px) {
-      header h1 { font-size: 1.9rem; }
+    @media (max-width: 800px) {
+      .info-grid { grid-template-columns: 1fr 1fr; }
       .overview { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .container { padding: 0 16px; }
+      .topbar .container { gap: 16px; }
+      .topbar nav { display: none; }
+      .currency { margin-left: auto; }
+      .hero { padding: 56px 0 48px; }
+      section.block { padding: 56px 0; }
+      section h2 { font-size: 1.6rem; }
+      .panel-inputs, .panel-body, .add-row, .overview { padding: 20px; }
+      .stats { grid-template-columns: 1fr; }
+      .stat { padding: 16px 20px; }
+      .stat + .stat { border-left: none; border-top: 1px solid var(--border); }
       .add-row { grid-template-columns: 1fr 1fr; }
       .add-row .full { grid-column: 1 / -1; }
-      section.card { padding: 1.25rem; }
+      .info-grid { grid-template-columns: 1fr; gap: 24px; }
+      .note { padding: 14px 20px; }
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>📈 Clever Investieren</h1>
-    <p>Einfache Werkzeuge rund ums Geldanlegen: Rechne aus, wie dein Vermögen wachsen kann,
-      behalte den Überblick über deine Anlagen und plane Entnahmen.</p>
-    <nav>
-      <a href="#rendite">Renditerechner</a>
-      <a href="#vermoegen">Vermögensübersicht</a>
-      <a href="#entnahme">Entnahmerechner</a>
-      <a href="#wissen">Wissen</a>
-    </nav>
-    <div class="currency">
-      Währung:
-      <select id="currency" aria-label="Währung">
-        <option value="CHF">CHF</option>
-        <option value="EUR">EUR</option>
-        <option value="USD">USD</option>
-      </select>
+  <header class="topbar">
+    <div class="container">
+      <a href="#" class="logo">Clever<span>Investieren</span></a>
+      <nav>
+        <a href="#rendite">Renditerechner</a>
+        <a href="#vermoegen">Vermögen</a>
+        <a href="#entnahme">Entnahme</a>
+        <a href="#wissen">Wissen</a>
+      </nav>
+      <div class="currency">
+        <label for="currency" style="margin:0">Währung</label>
+        <select id="currency">
+          <option value="CHF">CHF</option>
+          <option value="EUR">EUR</option>
+          <option value="USD">USD</option>
+        </select>
+      </div>
     </div>
   </header>
 
-  <main>
-    <!-- Renditerechner -->
-    <section class="card" id="rendite">
-      <h2>Renditerechner</h2>
-      <p class="sub">Wie viel wird aus deinem Geld mit Zinseszins?</p>
-      <div class="form">
-        <div><label for="r-start">Startbetrag</label><input id="r-start" type="number" min="0" step="100" value="5000"></div>
-        <div><label for="r-rate">Monatliche Sparrate</label><input id="r-rate" type="number" min="0" step="10" value="200"></div>
-        <div><label for="r-return">Rendite pro Jahr (%)</label><input id="r-return" type="number" step="0.1" value="6"></div>
-        <div><label for="r-years">Laufzeit (Jahre)</label><input id="r-years" type="number" min="1" max="60" value="20"></div>
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">Werkzeuge für Anlegerinnen und Anleger</p>
+      <h1>Behalten Sie Ihr Vermögen und Ihre Ziele im Blick.</h1>
+      <p class="intro">Berechnen Sie, wie Ihr Geld über die Jahre wachsen kann, erfassen Sie Ihre Anlagen
+        und planen Sie Entnahmen – übersichtlich und kostenlos.</p>
+      <div class="actions">
+        <a href="#rendite" class="btn">Rendite berechnen</a>
+        <a href="#vermoegen" class="btn outline">Vermögen erfassen</a>
       </div>
-      <div class="results">
-        <div class="stat big"><span>Endvermögen</span><strong id="r-end">–</strong></div>
-        <div class="stat"><span>Eingezahlt</span><strong id="r-paid">–</strong></div>
-        <div class="stat"><span>Zinsertrag</span><strong id="r-gain">–</strong></div>
-      </div>
-      <svg id="r-chart" viewBox="0 0 800 260" role="img" aria-label="Vermögensentwicklung pro Jahr"></svg>
-      <div class="legend">
-        <span><i style="background:var(--accent2)"></i>Eingezahlt</span>
-        <span><i style="background:var(--accent)"></i>Zinsertrag</span>
-      </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Vermögensübersicht -->
-    <section class="card" id="vermoegen">
-      <h2>Vermögensübersicht</h2>
-      <p class="sub">Trage deine Anlagen ein und sieh, wie dein Vermögen aufgeteilt ist.</p>
-      <form class="add-row" id="v-form">
-        <div class="full"><label for="v-name">Bezeichnung</label><input id="v-name" placeholder="z. B. MSCI World ETF" required></div>
-        <div><label for="v-cat">Kategorie</label>
-          <select id="v-cat"></select>
+  <!-- Renditerechner -->
+  <section class="block" id="rendite">
+    <div class="container">
+      <p class="eyebrow">Renditerechner</p>
+      <h2>Was aus Ihrem Geld werden kann</h2>
+      <p class="lead">Mit Zinseszins wächst Ihr Vermögen über die Zeit immer schneller.
+        Passen Sie die Werte an und sehen Sie das Ergebnis sofort.</p>
+
+      <div class="panel">
+        <div class="panel-inputs">
+          <div><label for="r-start">Startbetrag</label><input id="r-start" type="number" min="0" step="100" value="5000"></div>
+          <div><label for="r-rate">Monatliche Sparrate</label><input id="r-rate" type="number" min="0" step="10" value="200"></div>
+          <div><label for="r-return">Rendite pro Jahr (%)</label><input id="r-return" type="number" step="0.1" value="6"></div>
+          <div><label for="r-years">Laufzeit (Jahre)</label><input id="r-years" type="number" min="1" max="60" value="20"></div>
         </div>
-        <div><label for="v-amount">Betrag</label><input id="v-amount" type="number" min="0" step="any" required></div>
-        <div><button type="submit">Hinzufügen</button></div>
-      </form>
-
-      <div class="overview" style="margin-top:1.5rem">
-        <div class="donut-wrap">
-          <svg id="v-donut" viewBox="0 0 200 200" role="img" aria-label="Aufteilung des Vermögens"></svg>
-          <div class="donut-center"><span>Gesamt</span><strong id="v-total">–</strong></div>
+        <div class="stats">
+          <div class="stat main"><span>Endvermögen</span><strong id="r-end">–</strong></div>
+          <div class="stat"><span>Eingezahlt</span><strong id="r-paid">–</strong></div>
+          <div class="stat"><span>Zinsertrag</span><strong id="r-gain">–</strong></div>
         </div>
-        <div id="v-cats"></div>
+        <div class="panel-body">
+          <svg id="r-chart" viewBox="0 0 800 260" role="img" aria-label="Vermögensentwicklung pro Jahr"></svg>
+          <div class="legend">
+            <span><i style="background:var(--navy)"></i>Eingezahlt</span>
+            <span><i style="background:var(--blue-light)"></i>Zinsertrag</span>
+          </div>
+        </div>
       </div>
+    </div>
+  </section>
 
-      <table>
-        <thead><tr><th>Bezeichnung</th><th>Kategorie</th><th class="num">Betrag</th><th></th></tr></thead>
-        <tbody id="v-list"></tbody>
-      </table>
-      <p class="note">🔒 Deine Einträge werden nur in deinem Browser gespeichert. Nichts wird ins Internet übertragen,
-        andere Besucher sehen deine Daten nicht.</p>
-    </section>
+  <!-- Vermögensübersicht -->
+  <section class="block alt" id="vermoegen">
+    <div class="container">
+      <p class="eyebrow">Vermögensübersicht</p>
+      <h2>Ihr Vermögen auf einen Blick</h2>
+      <p class="lead">Erfassen Sie Ihre Anlagen und sehen Sie, wie Ihr Vermögen auf die
+        verschiedenen Anlageklassen verteilt ist.</p>
 
-    <!-- Entnahmerechner -->
-    <section class="card" id="entnahme">
-      <h2>Entnahmerechner</h2>
-      <p class="sub">Wie lange reicht dein Vermögen, wenn du jeden Monat Geld entnimmst?</p>
-      <div class="form">
-        <div><label for="e-capital">Vermögen</label><input id="e-capital" type="number" min="0" step="1000" value="300000"></div>
-        <div><label for="e-withdraw">Monatliche Entnahme</label><input id="e-withdraw" type="number" min="0" step="50" value="1500"></div>
-        <div><label for="e-return">Rendite pro Jahr (%)</label><input id="e-return" type="number" step="0.1" value="4"></div>
+      <div class="panel">
+        <form class="add-row" id="v-form">
+          <div class="full"><label for="v-name">Bezeichnung</label><input id="v-name" placeholder="z. B. MSCI World ETF" required></div>
+          <div><label for="v-cat">Kategorie</label><select id="v-cat"></select></div>
+          <div><label for="v-amount">Betrag</label><input id="v-amount" type="number" min="0" step="any" required></div>
+          <div><button type="submit" class="btn">Hinzufügen</button></div>
+        </form>
+
+        <div class="overview">
+          <div class="donut-wrap">
+            <svg id="v-donut" viewBox="0 0 200 200" role="img" aria-label="Aufteilung des Vermögens"></svg>
+            <div class="donut-center"><span>Gesamt</span><strong id="v-total">–</strong></div>
+          </div>
+          <div id="v-cats"></div>
+        </div>
+
+        <div class="panel-body">
+          <table>
+            <thead><tr><th>Bezeichnung</th><th>Kategorie</th><th class="num">Betrag</th><th></th></tr></thead>
+            <tbody id="v-list"></tbody>
+          </table>
+        </div>
+        <p class="note">Ihre Einträge werden ausschliesslich in Ihrem Browser gespeichert und nicht ins Internet übertragen.</p>
       </div>
-      <div class="results">
-        <div class="stat big"><span>Geld reicht für</span><strong id="e-duration">–</strong></div>
-        <div class="stat"><span>Summe aller Entnahmen</span><strong id="e-total">–</strong></div>
-        <div class="stat"><span>Entnahme ohne Kapitalverzehr</span><strong id="e-perpetual">–</strong></div>
-      </div>
-      <svg id="e-chart" viewBox="0 0 800 260" role="img" aria-label="Restvermögen pro Jahr"></svg>
-      <div class="legend"><span><i style="background:var(--accent2)"></i>Restvermögen am Jahresende</span></div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Wissen -->
-    <section class="card" id="wissen">
-      <h2>Kleines Anlage-Wissen</h2>
-      <p class="sub">Die wichtigsten Grundbegriffe kurz erklärt.</p>
+  <!-- Entnahmerechner -->
+  <section class="block" id="entnahme">
+    <div class="container">
+      <p class="eyebrow">Entnahmerechner</p>
+      <h2>Wie lange Ihr Vermögen reicht</h2>
+      <p class="lead">Planen Sie regelmässige Entnahmen, zum Beispiel für den Ruhestand,
+        und sehen Sie, wie sich Ihr Kapital entwickelt.</p>
+
+      <div class="panel">
+        <div class="panel-inputs">
+          <div><label for="e-capital">Vermögen</label><input id="e-capital" type="number" min="0" step="1000" value="300000"></div>
+          <div><label for="e-withdraw">Monatliche Entnahme</label><input id="e-withdraw" type="number" min="0" step="50" value="1500"></div>
+          <div><label for="e-return">Rendite pro Jahr (%)</label><input id="e-return" type="number" step="0.1" value="4"></div>
+        </div>
+        <div class="stats">
+          <div class="stat main"><span>Geld reicht für</span><strong id="e-duration">–</strong></div>
+          <div class="stat"><span>Summe der Entnahmen</span><strong id="e-total">–</strong></div>
+          <div class="stat"><span>Ohne Kapitalverzehr</span><strong id="e-perpetual">–</strong></div>
+        </div>
+        <div class="panel-body">
+          <svg id="e-chart" viewBox="0 0 800 260" role="img" aria-label="Restvermögen pro Jahr"></svg>
+          <div class="legend"><span><i style="background:var(--navy)"></i>Restvermögen am Jahresende</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wissen -->
+  <section class="block alt" id="wissen">
+    <div class="container">
+      <p class="eyebrow">Grundlagen</p>
+      <h2>Das Wichtigste zum Anlegen</h2>
       <div class="info-grid">
-        <div><h3>🔁 Zinseszins</h3><p>Erträge werden wieder angelegt und bringen selbst neue Erträge. Je länger die Laufzeit, desto stärker der Effekt.</p></div>
-        <div><h3>🧺 ETF</h3><p>Ein börsengehandelter Fonds, der einen Index nachbildet, z. B. den MSCI World. Günstig und breit gestreut.</p></div>
-        <div><h3>🎯 Diversifikation</h3><p>Verteile dein Geld auf viele Anlagen, Branchen und Länder. So sinkt das Risiko, dass ein einzelner Verlust stark schadet.</p></div>
-        <div><h3>⚖️ Risiko &amp; Rendite</h3><p>Höhere Renditechancen bedeuten meist auch höhere Schwankungen. Lege nur Geld an, das du länger nicht brauchst.</p></div>
+        <div><span class="num-label">01</span><h3>Zinseszins</h3><p>Erträge werden wieder angelegt und erwirtschaften selbst neue Erträge. Je länger die Laufzeit, desto stärker der Effekt.</p></div>
+        <div><span class="num-label">02</span><h3>ETF</h3><p>Ein börsengehandelter Fonds, der einen Index wie den MSCI World nachbildet. Kostengünstig und breit gestreut.</p></div>
+        <div><span class="num-label">03</span><h3>Diversifikation</h3><p>Verteilen Sie Ihr Geld auf viele Anlagen, Branchen und Länder, um das Risiko einzelner Verluste zu senken.</p></div>
+        <div><span class="num-label">04</span><h3>Risiko und Rendite</h3><p>Höhere Renditechancen gehen meist mit stärkeren Schwankungen einher. Investieren Sie nur Geld, das Sie länger nicht benötigen.</p></div>
       </div>
-    </section>
-  </main>
+    </div>
+  </section>
 
   <footer>
-    Alle Berechnungen sind vereinfachte Beispiele ohne Steuern, Gebühren und Inflation.
-    Keine Anlageberatung. Vergangene Renditen sind keine Garantie für die Zukunft.
+    <div class="container">
+      <a href="#" class="logo">Clever<span>Investieren</span></a>
+      <p>Alle Berechnungen sind vereinfachte Beispiele ohne Steuern, Gebühren und Inflation.
+        Sie stellen keine Anlageberatung dar. Vergangene Renditen sind keine Garantie für zukünftige Ergebnisse.</p>
+    </div>
   </footer>
 
   <script>
@@ -329,7 +433,9 @@
     }
 
     // ---------- Formatierung ----------
-    const currencySelect = document.getElementById('currency');
+    const $ = id => document.getElementById(id);
+    const num = id => parseFloat($(id).value) || 0;
+    const currencySelect = $('currency');
     currencySelect.value = load('currency', 'CHF');
     function money(n) {
       return new Intl.NumberFormat('de-CH', {
@@ -341,8 +447,6 @@
       if (Math.abs(n) >= 1e3) return Math.round(n / 1e3) + 'k';
       return Math.round(n).toString();
     }
-    const num = id => parseFloat(document.getElementById(id).value) || 0;
-    const $ = id => document.getElementById(id);
 
     // ---------- Balkendiagramm (SVG, gestapelt) ----------
     function barChart(svg, labels, series) {
@@ -353,8 +457,8 @@
       let out = '';
       for (let g = 0; g <= 4; g++) {
         const y = T + (H - T - B) * (1 - g / 4);
-        out += `<line x1="${L}" x2="${W}" y1="${y}" y2="${y}" stroke="currentColor" opacity=".12"/>`;
-        out += `<text x="${L - 6}" y="${y + 4}" text-anchor="end">${short(max * g / 4)}</text>`;
+        out += `<line x1="${L}" x2="${W}" y1="${y}" y2="${y}" stroke="#dde4f0"/>`;
+        out += `<text x="${L - 8}" y="${y + 4}" text-anchor="end">${short(max * g / 4)}</text>`;
       }
       const step = Math.ceil(labels.length / 12);
       labels.forEach((lab, i) => {
@@ -362,7 +466,7 @@
         series.forEach(s => {
           const h = Math.max(0, s.values[i]) / max * (H - T - B);
           y -= h;
-          out += `<rect x="${L + i * bw + bw * 0.15}" y="${y}" width="${bw * 0.7}" height="${h}" rx="2" style="fill:${s.color}"/>`;
+          out += `<rect x="${L + i * bw + bw * 0.2}" y="${y}" width="${bw * 0.6}" height="${h}" style="fill:${s.color}"/>`;
         });
         if (i % step === 0 || i === labels.length - 1)
           out += `<text x="${L + i * bw + bw / 2}" y="${H - 7}" text-anchor="middle">${lab}</text>`;
@@ -390,21 +494,21 @@
       $('r-paid').textContent = money(paid);
       $('r-gain').textContent = money(value - paid);
       barChart($('r-chart'), labels, [
-        { values: paidArr, color: 'var(--accent2)' },
-        { values: gainArr, color: 'var(--accent)' }
+        { values: paidArr, color: 'var(--navy)' },
+        { values: gainArr, color: 'var(--blue-light)' }
       ]);
     }
 
     // ---------- Vermögensübersicht ----------
     const categories = {
-      'Bankkonto': '#60a5fa',
-      'ETFs / Fonds': '#10b981',
-      'Aktien': '#8b5cf6',
-      'Anleihen': '#f59e0b',
-      'Krypto': '#ec4899',
-      'Immobilien': '#14b8a6',
-      'Vorsorge': '#6366f1',
-      'Sonstiges': '#94a3b8'
+      'Bankkonto': '#0a2463',
+      'ETFs / Fonds': '#1d4ed8',
+      'Aktien': '#3b82f6',
+      'Anleihen': '#93b4ec',
+      'Vorsorge': '#1e3a8a',
+      'Immobilien': '#60a5fa',
+      'Krypto': '#c7d7f5',
+      'Sonstiges': '#9aa7c0'
     };
     $('v-cat').innerHTML = Object.keys(categories).map(c => `<option>${c}</option>`).join('');
     let assets = load('assets', []);
@@ -420,32 +524,33 @@
       $('v-list').innerHTML = assets.length
         ? assets.map((a, i) => `<tr>
             <td>${escapeHtml(a.name)}</td>
-            <td><span class="dot" style="background:${categories[a.cat] || '#94a3b8'}"></span>${escapeHtml(a.cat)}</td>
+            <td><span class="dot" style="background:${categories[a.cat] || '#9aa7c0'}"></span>${escapeHtml(a.cat)}</td>
             <td class="num">${money(a.amount)}</td>
-            <td class="num"><button class="link" data-i="${i}" aria-label="Löschen">✕</button></td>
+            <td class="num"><button class="remove" data-i="${i}">Entfernen</button></td>
           </tr>`).join('')
-        : '<tr><td colspan="4" class="empty">Noch keine Einträge – füge oben deine erste Anlage hinzu.</td></tr>';
+        : '<tr><td colspan="4" class="empty">Noch keine Einträge. Erfassen Sie oben Ihre erste Anlage.</td></tr>';
 
       const sums = {};
       assets.forEach(a => sums[a.cat] = (sums[a.cat] || 0) + a.amount);
       const entries = Object.entries(sums).sort((a, b) => b[1] - a[1]);
 
-      const r = 80, C = 2 * Math.PI * r;
-      let offset = 0, donut = `<circle cx="100" cy="100" r="${r}" fill="none" stroke="currentColor" stroke-opacity=".1" stroke-width="28"/>`;
+      const r = 82, C = 2 * Math.PI * r;
+      let offset = 0, donut = `<circle cx="100" cy="100" r="${r}" fill="none" stroke="#eef3fb" stroke-width="20"/>`;
       if (total > 0) entries.forEach(([cat, val]) => {
         const len = val / total * C;
-        donut += `<circle cx="100" cy="100" r="${r}" fill="none" stroke="${categories[cat]}" stroke-width="28"
+        donut += `<circle cx="100" cy="100" r="${r}" fill="none" stroke="${categories[cat]}" stroke-width="20"
           stroke-dasharray="${len} ${C - len}" stroke-dashoffset="${-offset}" transform="rotate(-90 100 100)"/>`;
         offset += len;
       });
       $('v-donut').innerHTML = donut;
 
       $('v-cats').innerHTML = entries.length
-        ? '<table><tbody>' + entries.map(([cat, val]) => `<tr>
+        ? '<table><thead><tr><th>Anlageklasse</th><th class="num">Betrag</th><th class="num">Anteil</th></tr></thead><tbody>'
+          + entries.map(([cat, val]) => `<tr>
             <td><span class="dot" style="background:${categories[cat]}"></span>${cat}</td>
             <td class="num">${money(val)}</td>
             <td class="num">${(val / total * 100).toFixed(1)} %</td></tr>`).join('') + '</tbody></table>'
-        : '<p class="empty">Hier erscheint die Aufteilung nach Kategorien.</p>';
+        : '<p class="empty">Hier erscheint die Aufteilung nach Anlageklassen.</p>';
     }
 
     $('v-form').addEventListener('submit', e => {
@@ -492,7 +597,7 @@
         : `${y} J. ${m} Mt.`;
       $('e-total').textContent = money(taken);
       $('e-perpetual').textContent = money(capital * rm) + ' / Mt.';
-      barChart($('e-chart'), labels.length ? labels : [0], [{ values: values.length ? values : [capital], color: 'var(--accent2)' }]);
+      barChart($('e-chart'), labels.length ? labels : [0], [{ values: values.length ? values : [capital], color: 'var(--navy)' }]);
     }
 
     // ---------- Start ----------
